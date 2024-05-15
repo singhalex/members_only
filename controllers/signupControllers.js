@@ -8,6 +8,7 @@ exports.signup_get = asyncHandler(async (req, res, next) => {
   res.render("signup");
 });
 
+// Save the user in the DB
 exports.signup_post = asyncHandler(async (req, res, next) => {
   const user = new User({
     username: req.body.username,
