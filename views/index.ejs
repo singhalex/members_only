@@ -7,6 +7,19 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
-    <a href="/signup">Sign Up</a>
+    <% if (user) {%>
+    <h2>Welcome Back <%= user.username %></h2>
+    <a href="/auth/logout">LOG OUT</a>
+    <% } else { %>
+    <h2>Please log in</h2>
+    <form action="/auth/login" method="POST">
+      <label for="username">Username</label>
+      <input name="username" placeholder="username" type="text" />
+      <label for="password">Password</label>
+      <input name="password" type="password" />
+      <button>Log In</button>
+    </form>
+    <%}%>
+    <a href="/auth/signup">Sign Up</a>
   </body>
 </html>

@@ -3,15 +3,12 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-const asyncHandler = require("express-async-handler");
 const session = require("express-session");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-const signupRouter = require("./routes/signup");
-
+const authRouter = require("./routes/auth");
 require("dotenv").config();
 
 // Set up mongoDB connection
@@ -43,7 +40,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/signup", signupRouter);
+app.use("/auth", authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

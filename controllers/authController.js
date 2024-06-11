@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const passport = require("../utils/passport");
 
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
@@ -19,3 +20,18 @@ exports.signup_post = asyncHandler(async (req, res, next) => {
 
   res.redirect("/");
 });
+
+exports.login_post = passport.authenticate("local", {
+  successRedirect: "/",
+  failureRedirect: "/",
+});
+
+exports.logout_get = (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+
+    res.redirect("/");
+  });
+};
