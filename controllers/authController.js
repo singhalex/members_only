@@ -22,6 +22,11 @@ exports.signup_post = [
     .trim()
     .isLength({ min: 4 })
     .withMessage("Password must be at least 4 characters long"),
+  body("confirm")
+    .custom((value, { req }) => {
+      return value === req.body.password;
+    })
+    .withMessage("Passwords do not match"),
 
   // Process request after validation and sanitation
   asyncHandler(async (req, res, next) => {
