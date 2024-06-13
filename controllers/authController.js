@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const passport = require("../utils/passport");
+const bcrypt = require("bcryptjs");
 
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
@@ -26,32 +27,35 @@ exports.signup_post = [
   asyncHandler(async (req, res, next) => {
     // Extract validation erros from a request
     const errors = validationResult(req);
-    console.log(errors);
 
-    // Create a User object with the sanitized and trimmed data
-    const user = new User({
-      username: req.body.username,
-      password: req.body.password,
+    bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+      if (err) return next(err);
+
+      console.log(hashedPassword.length);
+
+      // Create a User object with the sanitized and trimmed data
+      const user = new User({
+        username: req.body.username,
+        password: hashedPassword,
+      });
+
+      const userExists = await User.findOne({
+        username: user.username,
+      }).exec();
+
+      if (userExists) {
+        errors.errors.unshift({ msg: "This username already exists." });
+      }
+
+      if (!errors.isEmpty()) {
+        // There are errors. Render the form again with the error messages
+        res.render("signup", { errors: errors });
+        return;
+      } else {
+        const result = await user.save();
+        res.redirect("/");
+      }
     });
-
-    const userExists = await User.findOne({
-      username: user.username,
-    }).exec();
-
-    if (userExists) {
-      errors.errors.unshift({ msg: "This username already exists." });
-    }
-
-    console.log(errors);
-
-    if (!errors.isEmpty()) {
-      // There are errors. Render the form again with the error messages
-      res.render("signup", { errors: errors });
-      return;
-    } else {
-      const result = await user.save();
-      res.redirect("/");
-    }
   }),
 ];
 
