@@ -13,5 +13,13 @@
       <input name="password" type="password" />
       <button>Sign Up</button>
     </form>
+    <% if (errors) { %>
+    <h2>Fix the following errors and resubmit:</h2>
+    <ul>
+      <% for (const error of errors.errors) { %>
+      <li><%= error.msg %></li>
+      <% } %>
+    </ul>
+    <% } %>
   </body>
 </html>
