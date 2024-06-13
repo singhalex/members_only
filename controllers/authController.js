@@ -6,20 +6,54 @@ const { body, validationResult } = require("express-validator");
 
 // Display user sign-up page
 exports.signup_get = asyncHandler(async (req, res, next) => {
-  res.render("signup");
+  res.render("signup", { errors: null });
 });
 
 // Save the user in the DB
-exports.signup_post = asyncHandler(async (req, res, next) => {
-  const user = new User({
-    username: req.body.username,
-    password: req.body.password,
-  });
+exports.signup_post = [
+  // Validate and sanitize fields
+  body("username")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Username cannot be empty."),
+  body("password")
+    .trim()
+    .isLength({ min: 4 })
+    .withMessage("Password must be at least 4 characters long"),
 
-  const result = await user.save();
+  // Process request after validation and sanitation
+  asyncHandler(async (req, res, next) => {
+    // Extract validation erros from a request
+    const errors = validationResult(req);
+    console.log(errors);
 
-  res.redirect("/");
-});
+    // Create a User object with the sanitized and trimmed data
+    const user = new User({
+      username: req.body.username,
+      password: req.body.password,
+    });
+
+    const userExists = await User.findOne({
+      username: user.username,
+    }).exec();
+
+    if (userExists) {
+      errors.errors.unshift({ msg: "This username already exists." });
+    }
+
+    console.log(errors);
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with the error messages
+      res.render("signup", { errors: errors });
+      return;
+    } else {
+      const result = await user.save();
+      res.redirect("/");
+    }
+  }),
+];
 
 exports.login_post = passport.authenticate("local", {
   successRedirect: "/",
