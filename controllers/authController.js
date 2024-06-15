@@ -57,7 +57,7 @@ exports.signup_post = [
         res.render("signup", { errors: errors });
         return;
       } else {
-        const result = await user.save();
+        await user.save();
         res.redirect("/");
       }
     });
