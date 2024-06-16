@@ -9,6 +9,7 @@ const passport = require("passport");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
+const postRouter = require("./routes/post");
 require("dotenv").config();
 
 // Set up mongoDB connection
@@ -47,6 +48,7 @@ app.use((req, res, next) => {
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
+app.use("/post", postRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
