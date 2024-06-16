@@ -36,8 +36,6 @@ exports.signup_post = [
     bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
       if (err) return next(err);
 
-      console.log(hashedPassword.length);
-
       // Create a User object with the sanitized and trimmed data
       const user = new User({
         username: req.body.username,
