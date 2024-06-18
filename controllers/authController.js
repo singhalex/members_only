@@ -11,6 +11,7 @@ exports.signup_get = asyncHandler(async (req, res, next) => {
     errors: null,
     user: res.locals.currentUser,
     username: null,
+    isAdmin: false,
   });
 });
 
@@ -44,6 +45,7 @@ exports.signup_post = [
       const user = new User({
         username: req.body.username,
         password: hashedPassword,
+        isAdmin: req.body.admin === "on" ? true : false,
       });
 
       const userExists = await User.findOne({
@@ -60,6 +62,7 @@ exports.signup_post = [
           errors: errors,
           user: res.locals.user,
           username: req.body.username,
+          isAdmin: req.body.admin === "on" ? true : false,
         });
         return;
       } else {

@@ -39,15 +39,27 @@
           type="text"
           value="<%= username %>"
         />
+
         <label for="password">Password</label>
         <input
           name="password"
           type="password"
           placeholder="Must be at least 4 characters"
         />
+
         <label for="confirm">ConfirmPassword</label>
         <input name="confirm" type="password" />
-        <button>Sign Up</button>
+
+        <label>
+          <% if (isAdmin) { %>
+          <input name="admin" type="checkbox" role="switch" checked />
+          <% } else { %>
+          <input name="admin" type="checkbox" role="switch" />
+          <% } %> Admin User
+        </label>
+        <br />
+
+        <input type="submit" value="Sign Up" />
       </form>
       <br />
       <% if (errors) { %>
