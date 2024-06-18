@@ -7,9 +7,4 @@ const UserSchema = new Schema({
   password: { type: String, required: true, maxLength: 60 },
 });
 
-// UserSchema.virtual("full_name").get(function () {
-//   const fullName = `${this.first_name} ${this.last_name}`;
-//   return fullName;
-// });
-
 module.exports = mongoose.model("User", UserSchema);

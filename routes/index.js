@@ -8,6 +8,7 @@ router.get("/", async function (req, res, next) {
 
   res.render("index", {
     user: res.locals.currentUser,
+    // Display posts in reverse chrono order
     posts: allPosts.reverse(),
   });
 });
