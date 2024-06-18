@@ -10,12 +10,12 @@ exports.post = [
     .trim()
     .isLength({ min: 3 })
     .escape()
-    .withMessage("Title must be at least 3 characters long. "),
+    .withMessage("Title must be between 3 and 50 characters. "),
   body("message")
     .trim()
-    .isLength({ min: 1 })
+    .isLength({ min: 3 })
     .escape()
-    .withMessage("Message must not be empty"),
+    .withMessage("Message must be between 3 and 200 characters."),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
@@ -25,14 +25,28 @@ exports.post = [
       res.redirect("/");
     }
 
-    // Save post to DB
-    const post = new Post({
-      title: req.body.title,
-      message: req.body.message,
-      author: req.user.id,
-    });
+    if (!errors.isEmpty()) {
+      const allPosts = await Post.find().populate("author").exec();
 
-    await post.save();
-    res.redirect("/");
+      res.render("index", {
+        errors: errors,
+        user: res.locals.currentUser,
+        // Display posts in reverse chrono order
+        posts: allPosts.reverse(),
+        title: req.body.title,
+        message: req.body.message,
+      });
+      return;
+    } else {
+      // Save post to DB
+      const post = new Post({
+        title: req.body.title,
+        message: req.body.message,
+        author: req.user.id,
+      });
+
+      await post.save();
+      res.redirect("/");
+    }
   }),
 ];

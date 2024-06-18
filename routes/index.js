@@ -7,9 +7,12 @@ router.get("/", async function (req, res, next) {
   const allPosts = await Post.find().populate("author").exec();
 
   res.render("index", {
+    errors: null,
     user: res.locals.currentUser,
     // Display posts in reverse chrono order
     posts: allPosts.reverse(),
+    title: null,
+    message: null,
   });
 });
 

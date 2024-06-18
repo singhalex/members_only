@@ -33,13 +33,30 @@
       <h2>Welcome Back, <%= user.username %>!</h2>
       <form action="/post" method="POST">
         <label for="title">Title</label>
-        <input type="text" name="title" placeholder="Title" />
+        <input
+          type="text"
+          name="title"
+          placeholder="Must be between 3 and 50 characters"
+          value="<%= title %>"
+        />
         <label for="message">Message</label>
-        <textarea name="message" id="message"></textarea>
+        <textarea
+          name="message"
+          id="message"
+          placeholder="Must be between 3 and 200 characters"
+        >
+<%= message %></textarea
+        >
         <button>Submit</button>
       </form>
       <br />
-      <% } else { %>
+      <% if (errors) { %>
+      <ul class="pico-color-pink-500">
+        <% for (const error of errors.errors) { %>
+        <li><%= error.msg %></li>
+        <% } %>
+      </ul>
+      <% } %> <% } else { %>
       <hgroup>
         <h2>
           To leave a message, please
