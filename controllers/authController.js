@@ -7,7 +7,11 @@ const { body, validationResult } = require("express-validator");
 
 // Display user sign-up page
 exports.signup_get = asyncHandler(async (req, res, next) => {
-  res.render("signup", { errors: null });
+  res.render("signup", {
+    errors: null,
+    user: res.locals.currentUser,
+    username: null,
+  });
 });
 
 // Save the user in the DB
@@ -52,7 +56,11 @@ exports.signup_post = [
 
       if (!errors.isEmpty()) {
         // There are errors. Render the form again with the error messages
-        res.render("signup", { errors: errors });
+        res.render("signup", {
+          errors: errors,
+          user: res.locals.user,
+          username: req.body.username,
+        });
         return;
       } else {
         await user.save();
@@ -62,9 +70,21 @@ exports.signup_post = [
   }),
 ];
 
+exports.login_get = (req, res, next) => {
+  // Save error message then clear session message
+  const lastError = req.session.messages;
+  req.session.messages = "";
+
+  res.render("login", {
+    user: res.locals.user,
+    errorMessage: lastError,
+  });
+};
+
 exports.login_post = passport.authenticate("local", {
   successRedirect: "/",
-  failureRedirect: "/",
+  failureRedirect: "/auth/login",
+  failureMessage: true,
 });
 
 exports.logout_get = (req, res, next) => {
