@@ -1,27 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="dark">
   <head>
     <title>Signup</title>
-    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.jade.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css"
+    />
   </head>
   <body>
-    <h1>Sign Up</h1>
-    <form action="" method="POST">
-      <label for="username">Username</label>
-      <input name="username" placeholder="username" type="text" />
-      <label for="password">Password</label>
-      <input name="password" type="password" />
-      <label for="confirm">ConfirmPassword</label>
-      <input name="confirm" type="password" />
-      <button>Sign Up</button>
-    </form>
-    <% if (errors) { %>
-    <h2>Fix the following errors and resubmit:</h2>
-    <ul>
-      <% for (const error of errors.errors) { %>
-      <li><%= error.msg %></li>
+    <nav class="container-fluid">
+      <ul>
+        <li><strong>Simple Message Board</strong></li>
+      </ul>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <% if (user) { %>
+        <li><a href="/auth/logout">Logout</a></li>
+        <% } else { %>
+        <li><a href="/auth/login">Log In</a></li>
+        <% } %>
+      </ul>
+    </nav>
+
+    <main class="container">
+      <h1>Sign Up</h1>
+      <form action="" method="POST">
+        <label for="username">Username</label>
+        <input
+          name="username"
+          placeholder="Username"
+          type="text"
+          value="<%= username %>"
+        />
+        <label for="password">Password</label>
+        <input
+          name="password"
+          type="password"
+          placeholder="Must be at least 4 characters"
+        />
+        <label for="confirm">ConfirmPassword</label>
+        <input name="confirm" type="password" />
+        <button>Sign Up</button>
+      </form>
+      <br />
+      <% if (errors) { %>
+      <ul class="pico-color-pink-500">
+        <% for (const error of errors.errors) { %>
+        <li><%= error.msg %></li>
+        <% } %>
+      </ul>
       <% } %>
-    </ul>
-    <% } %>
+    </main>
+    <footer class="container">
+      Created by Alex Singh.
+      <a
+        href="https://github.com/singhalex/members_only"
+        target="_blank"
+        rel="noopener"
+        >View Code on Github</a
+      >
+    </footer>
   </body>
 </html>
