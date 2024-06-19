@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+  <head>
+    <title>Signup</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.jade.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css"
+    />
+  </head>
+  <body>
+    <nav class="container-fluid">
+      <ul>
+        <li><strong>Simple Message Board</strong></li>
+      </ul>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <% if (user) { %>
+        <li><a href="/auth/logout">Logout</a></li>
+        <% } else { %>
+        <li><a href="/auth/signup">Sign Up</a></li>
+        <% } %>
+      </ul>
+    </nav>
+
+    <main class="container">
+      <h1>Are you sure you want to delete this post?</h1>
+      <article>
+        <header>
+          <strong><%= title %></strong>
+        </header>
+        <%= message %> <% if (user) { %>
+        <footer>
+          <small class="pico-color-grey-500">
+            Posted by <em><%= author %></em>
+          </small>
+        </footer>
+        <% } %>
+      </article>
+      <% if (user.isAdmin) { %>
+      <a href="/post/<%=postID%>/delete">
+        <button>Delete</button>
+      </a>
+      <a href="/">
+        <button class="secondary">Cancel</button>
+      </a>
+      <% } else { %>
+      <h2>You care not an admin user. You cannot delete this post.</h2>
+      <% } %>
+    </main>
+    <footer class="container">
+      Created by Alex Singh.
+      <a
+        href="https://github.com/singhalex/members_only"
+        target="_blank"
+        rel="noopener"
+        >View Code on Github</a
+      >
+    </footer>
+  </body>
+</html>
