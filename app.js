@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const session = require("express-session");
 const passport = require("passport");
+const compression = require("compression");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -38,6 +39,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
+app.use(compression());
 
 // Set
 app.use((req, res, next) => {
