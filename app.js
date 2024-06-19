@@ -6,6 +6,7 @@ var logger = require("morgan");
 const session = require("express-session");
 const passport = require("passport");
 const compression = require("compression");
+const helmet = require("helmet");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -39,6 +40,13 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["cdn.jsdelivr.net"],
+    },
+  })
+);
 app.use(compression());
 
 // Set
