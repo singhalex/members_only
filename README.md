@@ -45,7 +45,7 @@ Create a site that displays messages from authenticated users. Users can create 
 
 ### What I learned
 
-I learned how to encrypt user passwords using bcryptjs to store hashed and salted passwords in a mongoDB database. This allows me to store user login information without actually storing any password and risk having them leak. When a I user logs in, bcryptjs is used again to compare the log in info to the stored the database in  order to authenticate the user.
+I learned how to encrypt user passwords using bcryptjs to store hashed and salted passwords in a mongoDB database. This allows me to store user login information without actually storing any passwords and risk having them leak. When a user logs in, bcryptjs is used again to compare the log in info to the stored entry in the database in  order to authenticate the user.
 
 Passport is used to handle the user authentication using the local strategy (username and password) and creates a session that keeps the user logged in for a set amount of time.
 
@@ -53,7 +53,7 @@ I also learned how to use the ejs templating language along with the session dat
 
 ### Continued development
 
-Adding the ability to edit user info and posts would be a worthy addition. It would require manipulating database data, but would add some flexibility to site. This would require checking whether the post is attributed the logged in user in order to allow the data to be edited.
+Adding the ability to edit user info and posts would be a worthwhile addition. It would require manipulating database data, but would add some flexibility to site. This would require checking whether the post is attributed the logged in user in order to allow the data to be edited.
 
 I would also like to store the session in a MongoDb database to alleviate the stress on the server.
 
